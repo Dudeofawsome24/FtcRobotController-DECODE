@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.roadrunner.util;
 
+import android.util.ArraySet;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
@@ -24,7 +26,7 @@ public class ActionCommand implements Command {
 
     @Override
     public Set<Subsystem> getRequirements() {
-        return null;
+        return new ArraySet<>();
     }
 
     @Override

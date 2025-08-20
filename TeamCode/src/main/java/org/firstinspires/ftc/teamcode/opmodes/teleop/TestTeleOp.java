@@ -12,20 +12,16 @@ import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 @TeleOp(name = "Test", group = "TeleOp")
 public class TestTeleOp extends CommandOpMode {
 
-    private static SuperSystem s;
-    private static DriveSubsystem drive;
-
-    private GamepadEx driver;
-
     //Max Speed
     private double maxSpeed = 1.0;
 
     @Override
     public void initialize() {
-        driver = new GamepadEx(gamepad1);
+        GamepadEx driver = new GamepadEx(gamepad1);
+        GamepadEx operator = new GamepadEx(gamepad2);
 
-        s = new SuperSystem(hardwareMap, telemetry);
-        drive = new DriveSubsystem(hardwareMap, AutoHelpers.poseStorage);
+        SuperSystem s = new SuperSystem(hardwareMap, telemetry);
+        DriveSubsystem drive = new DriveSubsystem(hardwareMap, AutoHelpers.poseStorage);
 
         drive.driveCommand(() -> driver.getLeftX(), () -> driver.getLeftY(), () -> driver.getRightX(), () -> maxSpeed);
 

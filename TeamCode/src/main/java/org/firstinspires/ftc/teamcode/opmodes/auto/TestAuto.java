@@ -19,20 +19,15 @@ import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 @Autonomous(name = "Test Auto", group = "Autonomous")
 public class TestAuto extends LinearOpMode {
 
-    private static SuperSystem s;
-    private static MecanumDrive drive;
-
-    private static Pose2d initialPose;
-
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
         //AutoHelpers.autoDebug = true;
 
-        s = new SuperSystem(hardwareMap, telemetry);
-        drive = new MecanumDrive(hardwareMap, initialPose);
+        Pose2d initialPose = new Pose2d(0,0,Math.toRadians(0));
 
-        initialPose = new Pose2d(0,0,Math.toRadians(0));
+        SuperSystem s = new SuperSystem(hardwareMap, telemetry);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         TrajectoryActionBuilder dropOffPreload = drive.actionBuilder(initialPose)
             .lineToX(10)
@@ -52,11 +47,7 @@ public class TestAuto extends LinearOpMode {
                     s.Intake(),
                     new ActionCommand(sample1Pickup.build(), "picking up first sample", telemetry),
 
-                    new InstantCommand(() -> {
-
-                        AutoHelpers.poseStorage = new Pose2d(0,0,Math.toRadians(0));
-
-                    })
+                    new InstantCommand(() -> AutoHelpers.poseStorage = new Pose2d(0,0,Math.toRadians(0)))
                 )
 
             )
