@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
-import android.util.ArraySet;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -14,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.util.ActionCommand;
-import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
+import org.firstinspires.ftc.teamcode.roadrunner.util.AutoHelpers;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @Config
@@ -28,6 +26,8 @@ public class TestAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        //AutoHelpers.autoDebug = true;
 
         s = new SuperSystem(hardwareMap, telemetry);
         drive = new MecanumDrive(hardwareMap, initialPose);
@@ -48,13 +48,13 @@ public class TestAuto extends LinearOpMode {
             new WaitUntilCommand(this::isStarted).andThen(
 
                 new SequentialCommandGroup(
-                    new ActionCommand(dropOffPreload.build()),
+                    new ActionCommand(dropOffPreload.build(), "delivering preload", telemetry),
                     s.Intake(),
-                    new ActionCommand(sample1Pickup.build()),
+                    new ActionCommand(sample1Pickup.build(), "picking up first sample", telemetry),
 
                     new InstantCommand(() -> {
 
-                        PoseStorage.currentPose = new Pose2d(0,0,Math.toRadians(0));
+                        AutoHelpers.poseStorage = new Pose2d(0,0,Math.toRadians(0));
 
                     })
                 )

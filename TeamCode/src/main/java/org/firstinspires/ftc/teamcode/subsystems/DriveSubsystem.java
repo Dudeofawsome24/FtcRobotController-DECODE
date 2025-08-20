@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -48,7 +49,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Command driveCommand(Supplier<Double> leftX, Supplier<Double> leftY, Supplier<Double> rightX, Supplier<Double> scale) {
 
-        return new InstantCommand(() -> drive(leftX.get(), leftY.get(), rightX.get(), scale.get()), this);
+        return new RunCommand(() -> drive(leftX.get(), leftY.get(), rightX.get(), scale.get()), this);
 
     }
 

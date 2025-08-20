@@ -5,8 +5,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
+import org.firstinspires.ftc.teamcode.roadrunner.util.AutoHelpers;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
@@ -26,7 +25,7 @@ public class TestTeleOp extends CommandOpMode {
         driver = new GamepadEx(gamepad1);
 
         s = new SuperSystem(hardwareMap, telemetry);
-        drive = new DriveSubsystem(hardwareMap, PoseStorage.currentPose);
+        drive = new DriveSubsystem(hardwareMap, AutoHelpers.poseStorage);
 
         drive.driveCommand(() -> driver.getLeftX(), () -> driver.getLeftY(), () -> driver.getRightX(), () -> maxSpeed);
 
