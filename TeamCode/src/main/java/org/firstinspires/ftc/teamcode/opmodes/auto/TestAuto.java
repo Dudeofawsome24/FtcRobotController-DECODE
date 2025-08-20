@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.auto;
 
-import android.util.ArraySet;
-
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -14,25 +12,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.util.ActionCommand;
-import org.firstinspires.ftc.teamcode.roadrunner.util.PoseStorage;
+import org.firstinspires.ftc.teamcode.roadrunner.util.AutoHelpers;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @Config
 @Autonomous(name = "Test Auto", group = "Autonomous")
 public class TestAuto extends LinearOpMode {
 
-    private static SuperSystem s;
-    private static MecanumDrive drive;
-
-    private static Pose2d initialPose;
-
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
-        s = new SuperSystem(hardwareMap, telemetry);
-        drive = new MecanumDrive(hardwareMap, initialPose);
+        //AutoHelpers.autoDebug = true;
 
-        initialPose = new Pose2d(0,0,Math.toRadians(0));
+        Pose2d initialPose = new Pose2d(0,0,Math.toRadians(0));
+
+        SuperSystem s = new SuperSystem(hardwareMap, telemetry);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         TrajectoryActionBuilder dropOffPreload = drive.actionBuilder(initialPose)
             .lineToX(10)
@@ -48,15 +43,11 @@ public class TestAuto extends LinearOpMode {
             new WaitUntilCommand(this::isStarted).andThen(
 
                 new SequentialCommandGroup(
-                    new ActionCommand(dropOffPreload.build(), new ArraySet<>()),
+                    new ActionCommand(dropOffPreload.build(), "delivering preload", telemetry),
                     s.Intake(),
-                    new ActionCommand(sample1Pickup.build(), new ArraySet<>()),
+                    new ActionCommand(sample1Pickup.build(), "picking up first sample", telemetry),
 
-                    new InstantCommand(() -> {
-
-                        PoseStorage.currentPose = new Pose2d(0,0,Math.toRadians(0));
-
-                    })
+                    new InstantCommand(() -> AutoHelpers.poseStorage = new Pose2d(0,0,Math.toRadians(0)))
                 )
 
             )
