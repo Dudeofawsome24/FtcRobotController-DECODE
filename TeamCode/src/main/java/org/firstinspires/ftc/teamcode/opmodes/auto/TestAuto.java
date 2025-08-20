@@ -48,9 +48,9 @@ public class TestAuto extends LinearOpMode {
             new WaitUntilCommand(this::isStarted).andThen(
 
                 new SequentialCommandGroup(
-                    new ActionCommand(dropOffPreload.build(), new ArraySet<>()),
+                    new ActionCommand(dropOffPreload.build()),
                     s.Intake(),
-                    new ActionCommand(sample1Pickup.build(), new ArraySet<>()),
+                    new ActionCommand(sample1Pickup.build()),
 
                     new InstantCommand(() -> {
 

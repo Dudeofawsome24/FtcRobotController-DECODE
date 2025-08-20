@@ -10,17 +10,15 @@ import java.util.Set;
 
 public class ActionCommand implements Command {
     private final Action action;
-    private final Set<Subsystem> requirements;
     private boolean finished = false;
 
-    public ActionCommand(Action action, Set<Subsystem> requirements) {
+    public ActionCommand(Action action) {
         this.action = action;
-        this.requirements = requirements;
-    }
+        }
 
     @Override
     public Set<Subsystem> getRequirements() {
-        return requirements;
+        return null;
     }
 
     @Override
