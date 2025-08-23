@@ -3,13 +3,10 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.FunctionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.arcrobotics.ftclib.command.WaitUntilCommand;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -43,31 +40,13 @@ public class SingleMotorSubsystem extends SubsystemBase {
     }
 
     //Raw Power
-    private void initPowerMotor() {
-        motor.setRunMode(Motor.RunMode.RawPower);
-    }
-
     private void setPower(double power) {
+        motor.setRunMode(Motor.RunMode.RawPower);
         motor.set(power);
     }
 
     public Command setPowerCommand(Supplier<Double> power) {
-        return new FunctionalCommand(
-            //Init
-            () -> {
-                initPowerMotor();
-            },
-            //Execute
-            () -> {
-                setPower(power.get());
-            },
-            //End
-            interrupted -> motor.stopMotor(),
-            //Is finished
-            () -> true,
-            //requirements
-            this
-        );
+        return new InstantCommand(() -> setPower(power.get()));
     }
 
     //Positional Control
