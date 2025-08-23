@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.roadrunner.util.ActionCommand;
-import org.firstinspires.ftc.teamcode.roadrunner.util.AutoHelpers;
+import org.firstinspires.ftc.teamcode.custom_utility.ActionCommand;
+import org.firstinspires.ftc.teamcode.custom_utility.AutoHelpers;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @Config
@@ -44,7 +44,7 @@ public class TestAuto extends LinearOpMode {
 
                 new SequentialCommandGroup(
                     new ActionCommand(dropOffPreload.build(), "delivering preload", telemetry),
-                    s.Intake(),
+                    //s.Intake(),
                     new ActionCommand(sample1Pickup.build(), "picking up first sample", telemetry),
 
                     new InstantCommand(() -> AutoHelpers.poseStorage = new Pose2d(0,0,Math.toRadians(0)))

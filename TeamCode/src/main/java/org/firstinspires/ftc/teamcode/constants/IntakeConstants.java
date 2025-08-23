@@ -7,7 +7,7 @@ public class IntakeConstants {
     public static double kIntakeOn = 1.0;
 
     //Horizontal
-    public static double[] kFullStow = {0.0,0.0};
-    public static double[] kFullExtend = {1.0,1.0};
+    public static double[] kFullStow = {0.5,0.5};
+    public static double[] kFullExtend = {0.1,0.1};
 
 }
