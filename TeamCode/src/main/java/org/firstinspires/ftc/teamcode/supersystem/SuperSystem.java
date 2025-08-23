@@ -71,11 +71,19 @@ public class SuperSystem extends SubsystemBase {
     }
 
     public Command ScoreSpec() {
-        return arm.setPositionCommand(() -> TransferConstants.kArmScore);
+        return new SequentialCommandGroup(
+                claw.setPositionCommand(() -> TransferConstants.kClose),
+                arm.setPositionCommand(() -> TransferConstants.kArmScore)
+        );
     }
 
     public Command StowArm() {
-        return arm.setPositionCommand(() -> TransferConstants.kArmStow);
+        return new SequentialCommandGroup(
+            claw.setPositionCommand(() -> TransferConstants.kOpen),
+            arm.setPositionCommand(() -> TransferConstants.kArmStow)
+        );
+
+
     }
 
     private void setState(State state) {

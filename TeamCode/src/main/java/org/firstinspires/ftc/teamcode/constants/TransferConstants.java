@@ -4,6 +4,7 @@ public class TransferConstants {
 
     //Claw
     public static double kClose = 0.0;
+    public static double kOpen = 1.0;
 
     //Arm
     public static double[] kArmStow = {0.0, 0.0};
