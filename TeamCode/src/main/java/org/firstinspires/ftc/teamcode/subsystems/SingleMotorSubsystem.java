@@ -83,16 +83,31 @@ public class SingleMotorSubsystem extends SubsystemBase {
     }
 
     //Velocity Control
+
+    private void initVelocity() {
+        controller.reset();
+        motor.setRunMode(Motor.RunMode.VelocityControl);
+
+    }
+
+    private void runVelocity(double targetSpeed) {
+        double target = targetSpeed;
+        double current = motor.getVelocity();
+        double output = controller.calculate(current, target);
+        motor.set(output);
+    }
+
+
+
+
+
     public Command setVelocityCommand(Supplier<Double> targetSpeed) {
         return new FunctionalCommand(
             () -> {
-                controller.reset();
+                initVelocity();
             },
             () -> {
-                double target = targetSpeed.get();
-                double current = motor.getVelocity();
-                double output = controller.calculate(current, target);
-                motor.set(output);
+                runVelocity(targetSpeed.get());
             },
             interrupted -> motor.stopMotor(),
                 () -> false,
