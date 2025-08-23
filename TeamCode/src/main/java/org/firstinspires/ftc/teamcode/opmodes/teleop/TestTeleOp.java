@@ -29,6 +29,12 @@ public class TestTeleOp extends CommandOpMode {
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
             s.Intake()
         );
+
+        driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
+            s.ScoreSpec()
+        ).whenReleased(
+            s.StowArm()
+        );
     }
 
 }

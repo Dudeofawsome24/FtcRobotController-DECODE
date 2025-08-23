@@ -6,6 +6,8 @@ public class TransferConstants {
     public static double kClose = 0.0;
 
     //Arm
+    public static double[] kArmStow = {0.0, 0.0};
+    public static double[] kArmScore = {1.0, 1.0};
 
     //Slides
 
