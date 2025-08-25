@@ -29,7 +29,10 @@ public class SuperSystem extends SubsystemBase {
     //States
     private enum State {
         IDLE,
-        SAMPLE_HOLD
+        HOLD_SAMPLE,
+        HOLD_SPECIMEN,
+        INTAKE_SAMPLE,
+        INTAKE_SPECIMEN
     }
 
     private State currentState;
@@ -37,7 +40,7 @@ public class SuperSystem extends SubsystemBase {
     public SuperSystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
         //Single Motors
-        intake = new SingleMotorSubsystem(hardwareMap, telemetry, "intake");
+        intake = new SingleMotorSubsystem(hardwareMap, telemetry, "intakeMotor");
 
         //Single Servos
         claw = new SingleServoSubsystem(hardwareMap, telemetry, "claw");
@@ -47,13 +50,37 @@ public class SuperSystem extends SubsystemBase {
         arm = new DoubleServoSubsystem(hardwareMap, telemetry, "leftA", "rightA");
         //Initialise Servos
         horizontal.setPositionCommand(() -> IntakeConstants.kFullStow);
-        claw.setPositionCommand(() -> TransferConstants.kClose);
+        //claw.setPositionCommand(() -> TransferConstants.kClose);
 
         //Set state
         setState(State.IDLE);
     }
 
     public Command Intake() {
+        return intake.setPowerCommand(() -> IntakeConstants.kIntakeOn);
+    }
+
+    public Command IntakeOff() {
+        return intake.setPowerCommand(() -> IntakeConstants.kIntakeIdle);
+    }
+
+    public Command ClawClose() {
+        return claw.setPositionCommand(() -> TransferConstants.kClose);
+    }
+
+    public Command ClawOpen() {
+        return claw.setPositionCommand(() -> TransferConstants.kOpen);
+    }
+
+    public Command HorizontalStow() {
+        return horizontal.setPositionCommand(() -> IntakeConstants.kFullStow);
+    }
+
+    public Command HorizontalExtend() {
+        return horizontal.setPositionCommand(() -> IntakeConstants.kFullExtend);
+    }
+
+    /*public Command Intake() {
         return new ConditionalCommand(
             //Retracts and transfers if sample in intake
             new SequentialCommandGroup(
@@ -68,7 +95,7 @@ public class SuperSystem extends SubsystemBase {
             ),
             () -> currentState == State.SAMPLE_HOLD
         );
-    }
+    }*/
 
     public Command ScoreSpec() {
         return new SequentialCommandGroup(

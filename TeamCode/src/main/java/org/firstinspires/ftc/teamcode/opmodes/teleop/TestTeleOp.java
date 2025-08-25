@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.roadrunner.util.AutoHelpers;
+import org.firstinspires.ftc.teamcode.custom_utility.AutoHelpers;
+import org.firstinspires.ftc.teamcode.custom_utility.GamepadHelpers;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
@@ -18,16 +20,39 @@ public class TestTeleOp extends CommandOpMode {
     @Override
     public void initialize() {
         GamepadEx driver = new GamepadEx(gamepad1);
+        TriggerReader driverLeftTrigger = new TriggerReader(driver, GamepadKeys.Trigger.LEFT_TRIGGER);
+        TriggerReader driverRightTrigger = new TriggerReader(driver, GamepadKeys.Trigger.RIGHT_TRIGGER);
+
         GamepadEx operator = new GamepadEx(gamepad2);
+        TriggerReader operatorLeftTrigger = new TriggerReader(operator, GamepadKeys.Trigger.LEFT_TRIGGER);
+        TriggerReader operatorRightTrigger = new TriggerReader(operator, GamepadKeys.Trigger.RIGHT_TRIGGER);
 
         SuperSystem s = new SuperSystem(hardwareMap, telemetry);
         DriveSubsystem drive = new DriveSubsystem(hardwareMap, AutoHelpers.poseStorage);
 
-        drive.driveCommand(() -> driver.getLeftX(), () -> driver.getLeftY(), () -> driver.getRightX(), () -> maxSpeed);
-
         //Controls
+        drive.setDefaultCommand(
+            drive.driveCommand(() -> driver.getLeftX(), () -> driver.getLeftY(), () -> driver.getRightX(), () -> maxSpeed)
+        );
+
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
             s.Intake()
+        ).whenReleased(
+            s.IntakeOff()
+        );
+
+        driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
+            s.ClawClose()
+        ).whenReleased(
+            s.ClawOpen()
+        );
+
+        GamepadHelpers.getGamepadTrigger(driver, GamepadKeys.Trigger.RIGHT_TRIGGER, 0.5).whileActiveContinuous(
+            s.HorizontalExtend()
+        );
+
+        GamepadHelpers.getGamepadTrigger(driver, GamepadKeys.Trigger.LEFT_TRIGGER, 0.5).whileActiveContinuous(
+            s.HorizontalStow()
         );
 
         driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(

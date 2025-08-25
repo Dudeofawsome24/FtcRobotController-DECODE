@@ -26,7 +26,7 @@ public class SingleMotorSubsystem extends SubsystemBase {
         this.telemetry = telemetry;
 
         //Get motors & servos from hardware map
-        motor = hMap.get(MotorEx.class, name);
+        motor = new MotorEx(hMap, name);
         motor.setRunMode(Motor.RunMode.RawPower);
     }
 
@@ -35,7 +35,7 @@ public class SingleMotorSubsystem extends SubsystemBase {
         this.telemetry = telemetry;
 
         //Get motors & servos from hardware map
-        motor = hMap.get(MotorEx.class, name);
+        motor = new MotorEx(hMap, name);
         motor.setRunMode(Motor.RunMode.RawPower);
 
         controller = new PIDFController(kp, ki, kd, kf);
