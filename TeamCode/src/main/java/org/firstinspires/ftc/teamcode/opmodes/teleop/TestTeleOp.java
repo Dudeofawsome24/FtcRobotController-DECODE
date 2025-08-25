@@ -54,6 +54,12 @@ public class TestTeleOp extends CommandOpMode {
         GamepadHelpers.getGamepadTrigger(driver, GamepadKeys.Trigger.LEFT_TRIGGER, 0.5).whileActiveContinuous(
             s.HorizontalStow()
         );
+
+        driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
+            s.ScoreSpec()
+        ).whenReleased(
+            s.StowArm()
+        );
     }
 
 }

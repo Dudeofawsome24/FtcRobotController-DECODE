@@ -24,6 +24,8 @@ public class SuperSystem extends SubsystemBase {
     //Double servos
     private static DoubleServoSubsystem horizontal;
 
+    private static DoubleServoSubsystem arm;
+
     //States
     private enum State {
         IDLE,
@@ -45,7 +47,7 @@ public class SuperSystem extends SubsystemBase {
 
         //Double Servos
         horizontal = new DoubleServoSubsystem(hardwareMap, telemetry, "leftH", "rightH");
-
+        arm = new DoubleServoSubsystem(hardwareMap, telemetry, "leftA", "rightA");
         //Initialise Servos
         horizontal.setPositionCommand(() -> IntakeConstants.kFullStow);
         //claw.setPositionCommand(() -> TransferConstants.kClose);
@@ -94,6 +96,22 @@ public class SuperSystem extends SubsystemBase {
             () -> currentState == State.SAMPLE_HOLD
         );
     }*/
+
+    public Command ScoreSpec() {
+        return new SequentialCommandGroup(
+                claw.setPositionCommand(() -> TransferConstants.kClose),
+                arm.setPositionCommand(() -> TransferConstants.kArmScore)
+        );
+    }
+
+    public Command StowArm() {
+        return new SequentialCommandGroup(
+            claw.setPositionCommand(() -> TransferConstants.kOpen),
+            arm.setPositionCommand(() -> TransferConstants.kArmStow)
+        );
+
+
+    }
 
     private void setState(State state) {
         currentState = state;

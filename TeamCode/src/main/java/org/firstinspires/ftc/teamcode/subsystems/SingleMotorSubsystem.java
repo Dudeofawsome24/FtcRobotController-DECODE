@@ -27,6 +27,7 @@ public class SingleMotorSubsystem extends SubsystemBase {
 
         //Get motors & servos from hardware map
         motor = new MotorEx(hMap, name);
+        motor.setRunMode(Motor.RunMode.RawPower);
     }
 
     public SingleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String name, double kp, double ki, double kd, double kf){
@@ -35,13 +36,13 @@ public class SingleMotorSubsystem extends SubsystemBase {
 
         //Get motors & servos from hardware map
         motor = new MotorEx(hMap, name);
+        motor.setRunMode(Motor.RunMode.RawPower);
 
         controller = new PIDFController(kp, ki, kd, kf);
     }
 
     //Raw Power
     private void setPower(double power) {
-        motor.setRunMode(Motor.RunMode.RawPower);
         motor.set(power);
     }
 
@@ -50,24 +51,16 @@ public class SingleMotorSubsystem extends SubsystemBase {
     }
 
     //Positional Control
-    private void initPositionMotor(int position) {
-        motor.setRunMode(Motor.RunMode.PositionControl);
-        motor.setTargetPosition(position);
-        motor.set(0);
-        motor.setPositionTolerance(10);
-        controller.reset();
-    }
-
     private void setPosition(int position) {
-        double power = controller.calculate(motor.getCurrentPosition(), position);
-        motor.set(power);
+        double output = controller.calculate(motor.getCurrentPosition(), position);
+        motor.set(output);
     }
 
     public Command setPositionCommand(Supplier<Integer> position) {
         return new FunctionalCommand(
             //Init
             () -> {
-                initPositionMotor(position.get());
+                resetController();
             },
             //Execute
             () -> {
@@ -76,12 +69,36 @@ public class SingleMotorSubsystem extends SubsystemBase {
             //End
             interrupted -> motor.stopMotor(),
             //Is finished
-            () -> motor.atTargetPosition(),
+            () -> Math.abs(motor.getCurrentPosition() - position.get()) <= 10,
             //requirements
             this
         );
     }
 
     //Velocity Control
+    private void runVelocity(double velocity) {
+        double output = controller.calculate(motor.getVelocity(), velocity);
+        motor.set(output);
+    }
+
+    public Command setVelocityCommand(Supplier<Double> velocity) {
+        return new FunctionalCommand(
+            () -> {
+                resetController();
+            },
+            () -> {
+                runVelocity(velocity.get());
+            },
+            interrupted -> motor.stopMotor(),
+            () -> false,
+            this
+        );
+    }
+
+    //Shared Functions
+    private void resetController() {
+        if (controller != null) controller.reset();
+    }
+
 
 }
