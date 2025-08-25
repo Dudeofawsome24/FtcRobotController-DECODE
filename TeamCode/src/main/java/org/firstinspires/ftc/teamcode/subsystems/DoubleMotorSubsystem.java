@@ -7,43 +7,57 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
+import com.arcrobotics.ftclib.hardware.motors.MotorGroup;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.function.Supplier;
 
-public class SingleMotorSubsystem extends SubsystemBase {
+public class DoubleMotorSubsystem extends SubsystemBase {
 
-    private MotorEx motor;
+    private MotorEx motorLeader;
+    private MotorEx motorFollower;
+
+    private MotorGroup motorGroup;
 
     private Telemetry telemetry;
 
     private PIDFController controller;
 
-    public SingleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String name){
+    public DoubleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String nameLeader, String nameFollower){
 
         this.telemetry = telemetry;
 
-        //Get motor from hardware map
-        motor = new MotorEx(hMap, name);
-        motor.setRunMode(Motor.RunMode.RawPower);
+        //Get motors from hardware map
+        motorLeader = new MotorEx(hMap, nameLeader);
+        motorLeader.setRunMode(Motor.RunMode.RawPower);
+
+        motorFollower = new MotorEx(hMap, nameFollower);
+        motorFollower.setRunMode(Motor.RunMode.RawPower);
+
+        motorGroup = new MotorGroup(motorLeader, motorFollower);
     }
 
-    public SingleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String name, double kp, double ki, double kd, double kf){
+    public DoubleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String nameLeader, String nameFollower, double kp, double ki, double kd, double kf){
 
         this.telemetry = telemetry;
 
         //Get motors & servos from hardware map
-        motor = new MotorEx(hMap, name);
-        motor.setRunMode(Motor.RunMode.RawPower);
+        motorLeader = new MotorEx(hMap, nameLeader);
+        motorLeader.setRunMode(Motor.RunMode.RawPower);
+
+        motorFollower = new MotorEx(hMap, nameFollower);
+        motorFollower.setRunMode(Motor.RunMode.RawPower);
+
+        motorGroup = new MotorGroup(motorLeader, motorFollower);
 
         controller = new PIDFController(kp, ki, kd, kf);
     }
 
     //Raw Power
     private void setPower(double power) {
-        motor.set(power);
+        motorGroup.set(power);
     }
 
     public Command setPowerCommand(Supplier<Double> power) {
@@ -52,8 +66,8 @@ public class SingleMotorSubsystem extends SubsystemBase {
 
     //Positional Control
     private void setPosition(int position) {
-        double output = controller.calculate(motor.getCurrentPosition(), position);
-        motor.set(output);
+        double output = controller.calculate(motorGroup.getCurrentPosition(), position);
+        motorGroup.set(output);
     }
 
     public Command setPositionCommand(Supplier<Integer> position) {
@@ -67,9 +81,9 @@ public class SingleMotorSubsystem extends SubsystemBase {
                 setPosition(position.get());
             },
             //End
-            interrupted -> motor.stopMotor(),
+            interrupted -> motorGroup.stopMotor(),
             //Is finished
-            () -> Math.abs(motor.getCurrentPosition() - position.get()) <= 10,
+            () -> Math.abs(motorGroup.getCurrentPosition() - position.get()) <= 10,
             //requirements
             this
         );
@@ -77,8 +91,8 @@ public class SingleMotorSubsystem extends SubsystemBase {
 
     //Velocity Control
     private void runVelocity(double velocity) {
-        double output = controller.calculate(motor.getVelocity(), velocity);
-        motor.set(output);
+        double output = controller.calculate(motorGroup.getVelocity(), velocity);
+        motorGroup.set(output);
     }
 
     public Command setVelocityCommand(Supplier<Double> velocity) {
@@ -89,7 +103,7 @@ public class SingleMotorSubsystem extends SubsystemBase {
             () -> {
                 runVelocity(velocity.get());
             },
-            interrupted -> motor.stopMotor(),
+            interrupted -> motorGroup.stopMotor(),
             () -> false,
             this
         );

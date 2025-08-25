@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.TransferConstants;
+import org.firstinspires.ftc.teamcode.subsystems.DoubleMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DoubleServoSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleServoSubsystem;
@@ -17,6 +18,9 @@ public class SuperSystem extends SubsystemBase {
 
     //Single motors
     private static SingleMotorSubsystem intake;
+
+    //Double motors
+    private static DoubleMotorSubsystem lift;
 
     //Single servos
     private static SingleServoSubsystem claw;
@@ -41,6 +45,9 @@ public class SuperSystem extends SubsystemBase {
 
         //Single Motors
         intake = new SingleMotorSubsystem(hardwareMap, telemetry, "intakeMotor");
+
+        //Double Motors
+        lift = new DoubleMotorSubsystem(hardwareMap, telemetry, "topLift", "bottomLift", 0,0,0,0);
 
         //Single Servos
         claw = new SingleServoSubsystem(hardwareMap, telemetry, "claw");
@@ -80,23 +87,6 @@ public class SuperSystem extends SubsystemBase {
         return horizontal.setPositionCommand(() -> IntakeConstants.kFullExtend);
     }
 
-    /*public Command Intake() {
-        return new ConditionalCommand(
-            //Retracts and transfers if sample in intake
-            new SequentialCommandGroup(
-                intake.setPowerCommand(() -> IntakeConstants.kIntakeIdle),
-                horizontal.setPositionCommand(() -> IntakeConstants.kFullStow),
-                claw.setPositionCommand(() -> TransferConstants.kClose)
-            ),
-            //otherwise keep intake on
-            new SequentialCommandGroup(
-                horizontal.setPositionCommand(() -> IntakeConstants.kFullExtend),
-                intake.setPowerCommand(() -> IntakeConstants.kIntakeOn)
-            ),
-            () -> currentState == State.SAMPLE_HOLD
-        );
-    }*/
-
     public Command ScoreSpec() {
         return new SequentialCommandGroup(
                 claw.setPositionCommand(() -> TransferConstants.kClose),
@@ -116,6 +106,23 @@ public class SuperSystem extends SubsystemBase {
     private void setState(State state) {
         currentState = state;
     }
+
+    /*public Command Intake() {
+        return new ConditionalCommand(
+            //Retracts and transfers if sample in intake
+            new SequentialCommandGroup(
+                intake.setPowerCommand(() -> IntakeConstants.kIntakeIdle),
+                horizontal.setPositionCommand(() -> IntakeConstants.kFullStow),
+                claw.setPositionCommand(() -> TransferConstants.kClose)
+            ),
+            //otherwise keep intake on
+            new SequentialCommandGroup(
+                horizontal.setPositionCommand(() -> IntakeConstants.kFullExtend),
+                intake.setPowerCommand(() -> IntakeConstants.kIntakeOn)
+            ),
+            () -> currentState == State.SAMPLE_HOLD
+        );
+    }*/
 
 
 }

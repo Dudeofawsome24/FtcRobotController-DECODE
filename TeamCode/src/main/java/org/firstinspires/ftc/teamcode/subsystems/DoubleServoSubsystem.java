@@ -21,7 +21,7 @@ public class DoubleServoSubsystem extends SubsystemBase {
 
         this.telemetry = telemetry;
 
-        //Get motors & servos from hardware map
+        //Get servos from hardware map
         servoLeft = hMap.get(Servo.class, nameLeft);
         servoRight = hMap.get(Servo.class, nameRight);
     }
