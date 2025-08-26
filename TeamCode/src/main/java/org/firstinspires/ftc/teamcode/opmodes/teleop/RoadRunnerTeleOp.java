@@ -8,11 +8,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.customUtility.AutoHelpers;
 import org.firstinspires.ftc.teamcode.customUtility.GamepadHelpers;
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.RoadRunnerDriveSubsystem;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
-@TeleOp(name = "Test", group = "TeleOp")
-public class TestTeleOp extends CommandOpMode {
+@TeleOp(name = "Road Runner", group = "TeleOp")
+public class RoadRunnerTeleOp extends CommandOpMode {
 
     //Max Speed
     private double maxSpeed = 1.0;
@@ -28,7 +28,7 @@ public class TestTeleOp extends CommandOpMode {
         TriggerReader operatorRightTrigger = new TriggerReader(operator, GamepadKeys.Trigger.RIGHT_TRIGGER);
 
         SuperSystem s = new SuperSystem(hardwareMap, telemetry);
-        DriveSubsystem drive = new DriveSubsystem(hardwareMap, AutoHelpers.poseStorage);
+        RoadRunnerDriveSubsystem drive = new RoadRunnerDriveSubsystem(hardwareMap, AutoHelpers.poseStorage);
 
         //Controls
         drive.setDefaultCommand(

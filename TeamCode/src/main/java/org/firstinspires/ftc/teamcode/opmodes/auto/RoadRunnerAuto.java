@@ -16,8 +16,8 @@ import org.firstinspires.ftc.teamcode.customUtility.AutoHelpers;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @Config
-@Autonomous(name = "Test Auto", group = "Autonomous")
-public class TestAuto extends LinearOpMode {
+@Autonomous(name = "Road Runner", group = "Autonomous")
+public class RoadRunnerAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
