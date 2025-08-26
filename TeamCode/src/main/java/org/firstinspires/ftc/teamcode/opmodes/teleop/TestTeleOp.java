@@ -6,8 +6,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.custom_utility.AutoHelpers;
-import org.firstinspires.ftc.teamcode.custom_utility.GamepadHelpers;
+import org.firstinspires.ftc.teamcode.customUtility.AutoHelpers;
+import org.firstinspires.ftc.teamcode.customUtility.GamepadHelpers;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 

@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.custom_utility.ActionCommand;
-import org.firstinspires.ftc.teamcode.custom_utility.AutoHelpers;
+import org.firstinspires.ftc.teamcode.customUtility.ActionCommand;
+import org.firstinspires.ftc.teamcode.customUtility.AutoHelpers;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @Config
