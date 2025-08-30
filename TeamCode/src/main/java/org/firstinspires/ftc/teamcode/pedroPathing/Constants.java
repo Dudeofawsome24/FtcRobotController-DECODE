@@ -22,9 +22,9 @@ public class Constants {
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .leftFrontMotorName("leftFront")
-            .leftRearMotorName("leftRear")
+            .leftRearMotorName("leftBack")
             .rightFrontMotorName("rightFront")
-            .rightRearMotorName("rightRear")
+            .rightRearMotorName("rightBack")
             .leftFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.REVERSE)
