@@ -4,12 +4,11 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
+import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.customUtility.AutoHelpers;
 import org.firstinspires.ftc.teamcode.customUtility.GamepadHelpers;
-import org.firstinspires.ftc.teamcode.subsystems.PedroDriveSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.RoadRunnerDriveSubsystem;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @TeleOp(name = "PedroTeleop", group = "TeleOp")
@@ -26,12 +25,10 @@ public class PedroTeleOp extends CommandOpMode {
         TriggerReader operatorRightTrigger = new TriggerReader(operator, GamepadKeys.Trigger.RIGHT_TRIGGER);
 
         SuperSystem s = new SuperSystem(hardwareMap, telemetry);
-        PedroDriveSubsystem drive = new PedroDriveSubsystem(hardwareMap);
 
         //Controls
-        drive.setDefaultCommand(
-            drive.driveCommand(() -> driver.getLeftX(), () -> driver.getLeftY(), () -> driver.getRightX(), () -> false)
-        );
+        s.getFollower().startTeleopDrive();
+        s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> true);
 
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
             s.Intake()

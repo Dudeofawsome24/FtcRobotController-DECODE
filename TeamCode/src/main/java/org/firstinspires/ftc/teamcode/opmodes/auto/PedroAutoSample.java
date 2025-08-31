@@ -13,31 +13,31 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.pedroPathing.PathPointStorage;
 import org.firstinspires.ftc.teamcode.pedroPathing.commands.FollowPathCommand;
+import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @Autonomous
 public class PedroAutoSample extends CommandOpMode {
-    private Follower follower;
     private PathPointStorage paths;
-    private HardwareMap hMap;
+
+    private SuperSystem s = new SuperSystem(hardwareMap, telemetry);
 
     // Mechanism commands - replace with actual subsystem commands
-    private InstantCommand openOuttakeClaw() { return new InstantCommand(() -> {}); }
+    /*private InstantCommand openOuttakeClaw() { return new InstantCommand(() -> {}); }
     private InstantCommand grabSample() { return new InstantCommand(() -> {}); }
     private InstantCommand scoreSample() { return new InstantCommand(() -> {}); }
-    private InstantCommand level1Ascent() { return new InstantCommand(() -> {}); }
+    private InstantCommand level1Ascent() { return new InstantCommand(() -> {}); }*/
 
     @Override
     public void initialize() {
         // Initialize follower and paths
-        follower = Constants.createFollower(hMap);
-        follower.setStartingPose(paths.startPoseLine1);
-        paths = new PathPointStorage(follower);
+        s.getFollower().setStartingPose(paths.startPoseLine1);
+        paths = new PathPointStorage(s.getFollower());
 
         // Autonomous sequence
         SequentialCommandGroup autonomousSequence = new SequentialCommandGroup(
-                new FollowPathCommand(follower, paths.testLine1),
+                new FollowPathCommand(s.getFollower(), paths.testLine1),
                 new WaitCommand(1000),
-                new FollowPathCommand(follower, paths.testLine2)
+                new FollowPathCommand(s.getFollower(), paths.testLine2)
         );
 
                 /* FollowPathCommand(follower, paths.grabPickup1).setGlobalMaxPower(0.5),
