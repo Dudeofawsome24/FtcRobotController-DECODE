@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.supersystem;
 
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -41,23 +40,22 @@ public class SuperSystem extends SubsystemBase {
 
     private State currentState;
 
-    public SuperSystem(HardwareMap hardwareMap, Telemetry telemetry) {
+    public SuperSystem(HardwareMap hMap, Telemetry telemetry) {
 
         //Single Motors
-        intake = new SingleMotorSubsystem(hardwareMap, telemetry, "intakeMotor");
+        intake = new SingleMotorSubsystem(hMap, telemetry, "intakeMotor");
 
         //Double Motors
-        lift = new DoubleMotorSubsystem(hardwareMap, telemetry, "topLift", "bottomLift", 0,0,0,0);
+        lift = new DoubleMotorSubsystem(hMap, telemetry, "topLift", "bottomLift", 0,0,0,0);
 
         //Single Servos
-        claw = new SingleServoSubsystem(hardwareMap, telemetry, "claw");
+        claw = new SingleServoSubsystem(hMap, telemetry, "claw");
 
         //Double Servos
-        horizontal = new DoubleServoSubsystem(hardwareMap, telemetry, "leftH", "rightH");
-        arm = new DoubleServoSubsystem(hardwareMap, telemetry, "leftA", "rightA");
+        horizontal = new DoubleServoSubsystem(hMap, telemetry, "leftH", "rightH");
+        arm = new DoubleServoSubsystem(hMap, telemetry, "leftA", "rightA");
         //Initialise Servos
-        horizontal.setPositionCommand(() -> IntakeConstants.kFullStow);
-        //claw.setPositionCommand(() -> TransferConstants.kClose);
+        initServos();
 
         //Set state
         setState(State.IDLE);
@@ -103,8 +101,14 @@ public class SuperSystem extends SubsystemBase {
 
     }
 
+    //Super System helpers
     private void setState(State state) {
         currentState = state;
+    }
+
+    private void initServos() {
+        horizontal.setPositionCommand(() -> IntakeConstants.kFullStow);
+        claw.setPositionCommand(() -> TransferConstants.kClose);
     }
 
     /*public Command Intake() {
