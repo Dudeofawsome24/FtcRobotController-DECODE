@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.PedroDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.RoadRunnerDriveSubsystem;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
-@TeleOp(name = "Road Runner", group = "TeleOp")
+@TeleOp(name = "PedroTeleop", group = "TeleOp")
 public class PedroTeleOp extends CommandOpMode {
 
     @Override
