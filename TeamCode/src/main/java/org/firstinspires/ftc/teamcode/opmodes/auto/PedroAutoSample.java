@@ -30,16 +30,17 @@ public class PedroAutoSample extends CommandOpMode {
     public void initialize() {
         // Initialize follower and paths
         follower = Constants.createFollower(hMap);
-        follower.setStartingPose(new com.pedropathing.geometry.Pose(9, 111, Math.toRadians(-90)));
+        follower.setStartingPose(paths.startPoseLine1);
         paths = new PathPointStorage(follower);
 
         // Autonomous sequence
         SequentialCommandGroup autonomousSequence = new SequentialCommandGroup(
-                new FollowPathCommand(follower, paths.scorePreload),
-                openOuttakeClaw(),
+                new FollowPathCommand(follower, paths.testLine1),
                 new WaitCommand(1000),
+                new FollowPathCommand(follower, paths.testLine2)
+        );
 
-                new FollowPathCommand(follower, paths.grabPickup1).setGlobalMaxPower(0.5),
+                /* FollowPathCommand(follower, paths.grabPickup1).setGlobalMaxPower(0.5),
                 grabSample(),
                 new FollowPathCommand(follower, paths.scorePickup1),
                 scoreSample(),
@@ -55,8 +56,8 @@ public class PedroAutoSample extends CommandOpMode {
                 scoreSample(),
 
                 new FollowPathCommand(follower, paths.park, false),
-                level1Ascent()
-        );
+                level1Ascent()*/
+
 
         autonomousSequence.schedule();
     }

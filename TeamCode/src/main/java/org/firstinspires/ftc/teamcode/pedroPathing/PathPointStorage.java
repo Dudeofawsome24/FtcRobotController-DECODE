@@ -17,9 +17,17 @@ public class PathPointStorage {
     public final Pose pickup3Pose = new Pose(45, 128, Math.toRadians(90));
     public final Pose parkPose = new Pose(68, 96, Math.toRadians(-90));
 
+    public final Pose startPoseLine1 = new Pose(17.077, 66.231, Math.toRadians(47));
+    public final Pose midPoseLine1 = new Pose(71.308, 141.000);
+    public final Pose endPoseLine1 = new Pose(137.769, 81.923, Math.toRadians(-171));
+    public final Pose startPoseLine2 = new Pose(131.769, 81.923, Math.toRadians(-171));
+    public final Pose midPoseLine2 = new Pose(78.923, 1.154);
+    public final Pose endPoseLine2 = new Pose(17.077, 66.231, Math.toRadians(47));
+
     // Paths
     public PathChain scorePreload, grabPickup1, grabPickup2, grabPickup3;
     public PathChain scorePickup1, scorePickup2, scorePickup3, park;
+    public PathChain testLine1, testLine2;
 
     public PathPointStorage(Follower follower) {
         this.follower = follower;
@@ -27,10 +35,30 @@ public class PathPointStorage {
     }
 
     private void buildPaths() {
+
+        testLine1 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        startPoseLine1,
+                        midPoseLine1,
+                        endPoseLine1
+                ))
+                .setLinearHeadingInterpolation(startPoseLine1.getHeading(), endPoseLine1.getHeading())
+                .build();
+
+        testLine2 = follower.pathBuilder()
+                .addPath(new BezierCurve(
+                        startPoseLine2,
+                        midPoseLine2,
+                        endPoseLine2
+                ))
+                .setLinearHeadingInterpolation(startPoseLine2.getHeading(), endPoseLine2.getHeading())
+                .build();
+
         scorePreload = follower.pathBuilder()
                 .addPath(new BezierLine(startPose, scorePose))
                 .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
+
 
         grabPickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, pickup1Pose))
