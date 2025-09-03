@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DoubleMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DoubleServoSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleServoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
 
 public class SuperSystem extends SubsystemBase {
 
@@ -34,6 +35,9 @@ public class SuperSystem extends SubsystemBase {
 
     //Drive
     private static Follower follower;
+
+    //Vision
+    private static VisionSubsystem vison;
 
     //States
     private enum State {
@@ -63,6 +67,9 @@ public class SuperSystem extends SubsystemBase {
 
         //Drive
         follower = Constants.createFollower(hMap);
+
+        //Vision
+        vison = new VisionSubsystem(hMap, telemetry);
 
         //Initialise Servos
         initServos();
