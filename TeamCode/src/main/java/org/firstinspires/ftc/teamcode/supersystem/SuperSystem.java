@@ -1,13 +1,17 @@
 package org.firstinspires.ftc.teamcode.supersystem;
 
 import com.arcrobotics.ftclib.command.Command;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Supplier;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.TransferConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.DoubleMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DoubleServoSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleMotorSubsystem;
@@ -26,8 +30,10 @@ public class SuperSystem extends SubsystemBase {
 
     //Double servos
     private static DoubleServoSubsystem horizontal;
-
     private static DoubleServoSubsystem arm;
+
+    //Drive
+    private static Follower follower;
 
     //States
     private enum State {
@@ -54,6 +60,10 @@ public class SuperSystem extends SubsystemBase {
         //Double Servos
         horizontal = new DoubleServoSubsystem(hMap, telemetry, "leftH", "rightH");
         arm = new DoubleServoSubsystem(hMap, telemetry, "leftA", "rightA");
+
+        //Drive
+        follower = Constants.createFollower(hMap);
+
         //Initialise Servos
         initServos();
 
@@ -128,5 +138,23 @@ public class SuperSystem extends SubsystemBase {
         );
     }*/
 
+    //drive
+    private void drive(double leftY, double leftX, double rightX, boolean isRobotCentric) {
+        follower.setTeleOpDrive(-leftY, -leftX, -rightX, isRobotCentric);
+    }
+
+    public Command Drive(Supplier<Double> leftY, Supplier<Double> leftX, Supplier<Double> rightX, Supplier<Boolean> isRobotCentric) {
+
+        return new RunCommand(
+
+            () -> drive(leftY.get(), leftX.get(), rightX.get(), isRobotCentric.get())
+
+        );
+
+    }
+
+    public Follower getFollower() {
+        return follower;
+    }
 
 }
