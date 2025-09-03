@@ -28,7 +28,7 @@ public class PedroTeleOp extends CommandOpMode {
 
         //Controls
         s.getFollower().startTeleopDrive();
-        s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> true);
+        s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> true).schedule();
 
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
             s.Intake()
