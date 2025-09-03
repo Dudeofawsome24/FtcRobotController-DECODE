@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.supersystem;
 
 import com.arcrobotics.ftclib.command.Command;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -158,6 +159,31 @@ public class SuperSystem extends SubsystemBase {
 
         );
 
+    }
+
+    private void alignRotationTag(double targetRotation) {
+        double kp = 0.5;
+
+        double error = (targetRotation - vison.getAprilTagPose().getOrientation().getYaw()) * kp;
+
+        drive(0,0,error, true);
+    }
+
+    public Command AlignRotationTag(Supplier<Double> targetRotation) {
+        return new InstantCommand(() -> alignRotationTag(targetRotation.get()));
+    }
+
+    private void alignPositionTag(double targetX, double targetZ) {
+        double kp = 0.5;
+
+        double errorX = (targetX - vison.getAprilTagPose().getPosition().x) * kp;
+        double errorZ = (targetX - vison.getAprilTagPose().getPosition().z) * kp;
+
+        drive(errorZ,errorX,0, true);
+    }
+
+    public Command AlignPositionTag(Supplier<Double> targetX, Supplier<Double> targetZ) {
+        return new InstantCommand(() -> alignPositionTag(targetX.get(), targetZ.get()));
     }
 
     public Follower getFollower() {

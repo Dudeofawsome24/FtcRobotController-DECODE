@@ -4,11 +4,9 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
-import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.customUtility.GamepadHelpers;
-import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.supersystem.SuperSystem;
 
 @TeleOp(name = "PedroTeleop", group = "TeleOp")
@@ -28,7 +26,7 @@ public class PedroTeleOp extends CommandOpMode {
 
         //Controls
         s.getFollower().startTeleopDrive();
-        s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> true).schedule();
+        s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> false).schedule();
 
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
             s.Intake()
@@ -54,6 +52,18 @@ public class PedroTeleOp extends CommandOpMode {
             s.ScoreSpec()
         ).whenReleased(
             s.StowArm()
+        );
+
+        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
+            s.AlignRotationTag(() -> 0.0)
+        ).whenReleased(
+            s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> false)
+        );
+
+        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
+            s.AlignPositionTag(() -> 0.0, () -> 0.0)
+        ).whenReleased(
+            s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> false)
         );
     }
 
