@@ -30,7 +30,7 @@ public class SingleMotorSubsystem extends SubsystemBase {
         motor.setRunMode(Motor.RunMode.RawPower);
     }
 
-    public SingleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String name, double kp, double ki, double kd, double kf){
+    public SingleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String name, double[] PIDF){
 
         this.telemetry = telemetry;
 
@@ -38,7 +38,7 @@ public class SingleMotorSubsystem extends SubsystemBase {
         motor = new MotorEx(hMap, name);
         motor.setRunMode(Motor.RunMode.RawPower);
 
-        controller = new PIDFController(kp, ki, kd, kf);
+        controller = new PIDFController(PIDF[0], PIDF[1], PIDF[2], PIDF[3]);
     }
 
     //Raw Power

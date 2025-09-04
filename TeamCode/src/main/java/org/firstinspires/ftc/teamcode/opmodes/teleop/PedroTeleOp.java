@@ -26,7 +26,9 @@ public class PedroTeleOp extends CommandOpMode {
 
         //Controls
         s.getFollower().startTeleopDrive();
-        s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> false).schedule();
+        s.getDrive().setDefaultCommand(
+            s.getDrive().Drive(() -> driver.getLeftX(), () -> driver.getLeftY(), () -> driver.getRightX(), () -> false)
+        );
 
         driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(
             s.Intake()
@@ -54,16 +56,12 @@ public class PedroTeleOp extends CommandOpMode {
             s.StowArm()
         );
 
-        operator.getGamepadButton(GamepadKeys.Button.A).whenPressed(
-            s.AlignRotationTag(() -> 0.0)
-        ).whenReleased(
-            s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> false)
+        operator.getGamepadButton(GamepadKeys.Button.A).whileHeld(
+            s.AlignTagRotation()
         );
 
-        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
-            s.AlignPositionTag(() -> 0.0, () -> 0.0)
-        ).whenReleased(
-            s.Drive(() -> driver.getLeftY(), () -> driver.getLeftX(), () -> driver.getRightX(), () -> false)
+        operator.getGamepadButton(GamepadKeys.Button.B).whileHeld(
+            s.AlignTagPosition()
         );
     }
 
