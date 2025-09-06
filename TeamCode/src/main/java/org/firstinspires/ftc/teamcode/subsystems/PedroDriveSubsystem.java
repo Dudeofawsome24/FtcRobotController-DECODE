@@ -39,6 +39,10 @@ public class PedroDriveSubsystem extends SubsystemBase {
 
     }
 
+    public PedroDriveSubsystem(HardwareMap hMap, Follower follower) {
+        this.follower = follower;
+    }
+
     //drive
     private void drive(double leftY, double leftX, double rightX, boolean isRobotCentric) {
         follower.setTeleOpDrive(-leftY, -leftX, -rightX, isRobotCentric);

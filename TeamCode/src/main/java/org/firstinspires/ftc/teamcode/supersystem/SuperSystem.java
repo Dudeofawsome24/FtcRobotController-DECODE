@@ -61,19 +61,20 @@ public class SuperSystem extends SubsystemBase {
         intake = new SingleMotorSubsystem(hMap, telemetry, "intakeMotor");
 
         //Double Motors
-        lift = new DoubleMotorSubsystem(hMap, telemetry, "topLift", "bottomLift", PIDFConstants.elevatorPIDF);
+        //lift = new DoubleMotorSubsystem(hMap, telemetry, "topLift", "bottomLift", PIDFConstants.elevatorPIDF);
 
         //Single Servos
-        claw = new SingleServoSubsystem(hMap, telemetry, "claw");
+        //claw = new SingleServoSubsystem(hMap, telemetry, "claw");
 
         //Double Servos
-        horizontal = new DoubleServoSubsystem(hMap, telemetry, "leftH", "rightH");
-        arm = new DoubleServoSubsystem(hMap, telemetry, "leftA", "rightA");
+        //horizontal = new DoubleServoSubsystem(hMap, telemetry, "leftH", "rightH");
+        //arm = new DoubleServoSubsystem(hMap, telemetry, "leftA", "rightA");
 
         //Drive & Vision
         follower = Constants.createFollower(hMap);
-        vision = new VisionSubsystem(hMap, telemetry);
-        drive = new PedroDriveSubsystem(hMap, follower, vision, PIDFConstants.rotationPIDF, PIDFConstants.rotationPIDF);
+        //vision = new VisionSubsystem(hMap, telemetry);
+        //drive = new PedroDriveSubsystem(hMap, follower, vision, PIDFConstants.rotationPIDF, PIDFConstants.rotationPIDF);
+        drive = new PedroDriveSubsystem(hMap, follower);
 
         //Initialise Servos
         initServos();
@@ -90,7 +91,7 @@ public class SuperSystem extends SubsystemBase {
         return intake.setPowerCommand(() -> IntakeConstants.kIntakeIdle);
     }
 
-    public Command ClawClose() {
+    /*public Command ClawClose() {
         return claw.setPositionCommand(() -> TransferConstants.kClose);
     }
 
@@ -120,7 +121,7 @@ public class SuperSystem extends SubsystemBase {
         );
 
 
-    }
+    }*/
 
     //Super System helpers
     private void setState(State state) {
@@ -128,8 +129,8 @@ public class SuperSystem extends SubsystemBase {
     }
 
     private void initServos() {
-        horizontal.setPositionCommand(() -> IntakeConstants.kFullStow);
-        claw.setPositionCommand(() -> TransferConstants.kClose);
+        //horizontal.setPositionCommand(() -> IntakeConstants.kFullStow);
+        //claw.setPositionCommand(() -> TransferConstants.kClose);
     }
 
     /*public Command Intake() {
@@ -158,7 +159,7 @@ public class SuperSystem extends SubsystemBase {
         return drive;
     }
 
-    public Command AlignTagRotation() {
+    /*public Command AlignTagRotation() {
 
         return drive.AlignRotationTag(() -> VisionConstants.tagAlign[2]);
 
@@ -168,6 +169,6 @@ public class SuperSystem extends SubsystemBase {
 
         return drive.AlignPositionTag(() -> VisionConstants.tagAlign[0], () -> VisionConstants.tagAlign[1]);
 
-    }
+    }*/
 
 }
