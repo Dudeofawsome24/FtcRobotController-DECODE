@@ -58,7 +58,7 @@ public class PedroAutoSample extends CommandOpMode {
                 new FollowPathCommand(follower, paths.park, false),
                 level1Ascent()*/
 
-
+        waitForStart();
         autonomousSequence.schedule();
     }
 

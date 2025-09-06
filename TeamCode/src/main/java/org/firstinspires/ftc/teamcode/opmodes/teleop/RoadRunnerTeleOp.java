@@ -41,7 +41,7 @@ public class RoadRunnerTeleOp extends CommandOpMode {
             s.IntakeOff()
         );
 
-        driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
+        /*driver.getGamepadButton(GamepadKeys.Button.X).whenPressed(
             s.ClawClose()
         ).whenReleased(
             s.ClawOpen()
@@ -59,7 +59,7 @@ public class RoadRunnerTeleOp extends CommandOpMode {
             s.ScoreSpec()
         ).whenReleased(
             s.StowArm()
-        );
+        );*/
     }
 
 }

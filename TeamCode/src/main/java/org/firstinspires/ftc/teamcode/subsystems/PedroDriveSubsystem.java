@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Supplier;
@@ -41,18 +42,21 @@ public class PedroDriveSubsystem extends SubsystemBase {
 
     public PedroDriveSubsystem(HardwareMap hMap, Follower follower) {
         this.follower = follower;
+        follower.setStartingPose(new Pose(0,0, Math.toRadians(0)));
     }
 
     //drive
     private void drive(double leftY, double leftX, double rightX, boolean isRobotCentric) {
-        follower.setTeleOpDrive(-leftY, -leftX, -rightX, isRobotCentric);
+        follower.update();
+        follower.setTeleOpDrive(-leftX, leftY, -rightX, isRobotCentric);
     }
 
     public Command Drive(Supplier<Double> leftY, Supplier<Double> leftX, Supplier<Double> rightX, Supplier<Boolean> isRobotCentric) {
 
         return new RunCommand(
 
-            () -> drive(leftY.get(), leftX.get(), rightX.get(), isRobotCentric.get())
+            () -> drive(leftY.get(), leftX.get(), rightX.get(), isRobotCentric.get()),
+                this
 
         );
 
