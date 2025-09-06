@@ -39,7 +39,7 @@ public class DoubleMotorSubsystem extends SubsystemBase {
         motorGroup = new MotorGroup(motorLeader, motorFollower);
     }
 
-    public DoubleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String nameLeader, String nameFollower, double kp, double ki, double kd, double kf){
+    public DoubleMotorSubsystem(final HardwareMap hMap, Telemetry telemetry, String nameLeader, String nameFollower, double[] PIDF){
 
         this.telemetry = telemetry;
 
@@ -52,7 +52,7 @@ public class DoubleMotorSubsystem extends SubsystemBase {
 
         motorGroup = new MotorGroup(motorLeader, motorFollower);
 
-        controller = new PIDFController(kp, ki, kd, kf);
+        controller = new PIDFController(PIDF[0], PIDF[1], PIDF[2], PIDF[3]);
     }
 
     //Raw Power

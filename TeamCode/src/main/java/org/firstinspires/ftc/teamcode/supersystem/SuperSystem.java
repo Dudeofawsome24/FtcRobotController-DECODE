@@ -1,21 +1,28 @@
 package org.firstinspires.ftc.teamcode.supersystem;
 
 import com.arcrobotics.ftclib.command.Command;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.pedropathing.follower.Follower;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Supplier;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
+import org.firstinspires.ftc.teamcode.constants.PIDFConstants;
 import org.firstinspires.ftc.teamcode.constants.TransferConstants;
+import org.firstinspires.ftc.teamcode.constants.VisionConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.DoubleMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DoubleServoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PedroDriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SingleServoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.VisionSubsystem;
 
 public class SuperSystem extends SubsystemBase {
 
@@ -32,8 +39,10 @@ public class SuperSystem extends SubsystemBase {
     private static DoubleServoSubsystem horizontal;
     private static DoubleServoSubsystem arm;
 
-    //Drive
+    //Drive & Vision
     private static Follower follower;
+    private static VisionSubsystem vision;
+    private static PedroDriveSubsystem drive;
 
     //States
     private enum State {
@@ -52,7 +61,7 @@ public class SuperSystem extends SubsystemBase {
         intake = new SingleMotorSubsystem(hMap, telemetry, "intakeMotor");
 
         //Double Motors
-        lift = new DoubleMotorSubsystem(hMap, telemetry, "topLift", "bottomLift", 0,0,0,0);
+        lift = new DoubleMotorSubsystem(hMap, telemetry, "topLift", "bottomLift", PIDFConstants.elevatorPIDF);
 
         //Single Servos
         claw = new SingleServoSubsystem(hMap, telemetry, "claw");
@@ -61,8 +70,10 @@ public class SuperSystem extends SubsystemBase {
         horizontal = new DoubleServoSubsystem(hMap, telemetry, "leftH", "rightH");
         arm = new DoubleServoSubsystem(hMap, telemetry, "leftA", "rightA");
 
-        //Drive
+        //Drive & Vision
         follower = Constants.createFollower(hMap);
+        vision = new VisionSubsystem(hMap, telemetry);
+        drive = new PedroDriveSubsystem(hMap, follower, vision, PIDFConstants.rotationPIDF, PIDFConstants.rotationPIDF);
 
         //Initialise Servos
         initServos();
@@ -138,23 +149,25 @@ public class SuperSystem extends SubsystemBase {
         );
     }*/
 
-    //drive
-    private void drive(double leftY, double leftX, double rightX, boolean isRobotCentric) {
-        follower.setTeleOpDrive(-leftY, -leftX, -rightX, isRobotCentric);
-    }
-
-    public Command Drive(Supplier<Double> leftY, Supplier<Double> leftX, Supplier<Double> rightX, Supplier<Boolean> isRobotCentric) {
-
-        return new RunCommand(
-
-            () -> drive(leftY.get(), leftX.get(), rightX.get(), isRobotCentric.get())
-
-        );
-
-    }
-
+    //Drive
     public Follower getFollower() {
         return follower;
+    }
+
+    public PedroDriveSubsystem getDrive() {
+        return drive;
+    }
+
+    public Command AlignTagRotation() {
+
+        return drive.AlignRotationTag(() -> VisionConstants.tagAlign[2]);
+
+    }
+
+    public Command AlignTagPosition() {
+
+        return drive.AlignPositionTag(() -> VisionConstants.tagAlign[0], () -> VisionConstants.tagAlign[1]);
+
     }
 
 }
